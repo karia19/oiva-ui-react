@@ -7,10 +7,9 @@ This is a React component library containing an ImageGrid component for displayi
 
 Installation
 
-Bash
-npm install oiva-ui-react
-Käytä koodia harkiten.
-content_copy
+bash#
+  npm install oiva-ui-react
+
 Usage
 
 Import the ImageGrid component from the library and provide it with two props:
