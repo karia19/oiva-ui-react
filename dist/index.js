@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
@@ -34,42 +34,40 @@ var Button = function (props) {
     return React.createElement("button", { className: "styled-button" }, props.label);
 };
 
-var css_248z = ".image-component {\n    padding-top: 60px;\n    padding-bottom: 100px;\n} \n.row1 {\n    display: -ms-flexbox; /* IE10 */\n    display: flex;\n    -ms-flex-wrap: wrap; /* IE10 */\n    flex-wrap: wrap;\n\n}\n  \n  /* Create four equal columns that sits next to each other */\n.column {\n    -ms-flex: 30%; /* IE10 */\n    flex: 25%;\n    max-width: 100%;\n    padding: 0 10px;\n}\n  \n.column img {\n    margin-top: 15px;\n    vertical-align: middle;\n    width: 100%;\n}\n  \n/* Responsive layout - makes a two column-layout instead of four columns */\n@media screen and (max-width: 800px) {\n    .column {\n      -ms-flex: 50%;\n      flex: 50%;\n      max-width: 50%;\n    }\n}\n  \n/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */\n@media screen and (max-width: 600px) {\n    .column {\n      -ms-flex: 100%;\n      flex: 100%;\n      max-width: 100%;\n    }\n}\n\n\n \n\n  ";
+var css_248z = ".image-component {\n    padding-top: 60px;\n    padding-bottom: 100px;\n} \n.row1 {\n    display: -ms-flexbox; /* IE10 */\n    display: flex;\n    -ms-flex-wrap: wrap; /* IE10 */\n    flex-wrap: wrap;\n\n}\n  \n.column {\n    -ms-flex: 33.33%; /* IE10 */\n    flex: 33.33%;\n    max-width: 33.33%;\n    padding: 0 6px;\n  \n}\n.column img {\n    margin-top: 10px;\n    vertical-align: middle;\n    width: 100%;\n}  \n\n.column-4 {\n    -ms-flex: 25%; /* IE10 */\n    flex: 25%;\n    max-width: 25%;\n    padding: 0 8px;\n}\n.column-4 img {\n    margin-top: 10px;\n    vertical-align: middle;\n    width: 100%;\n}  \n\n \n\n\n/* Responsive layout - makes a two column-layout instead of four columns */\n@media screen and (max-width: 800px) {\n    .column {\n      -ms-flex: 50%;\n      flex: 50%;\n      max-width: 50%;\n    }\n    .column-4 {\n        -ms-flex: 33.33%;\n        flex: 33.33%;\n        max-width: 33.33%;\n    }\n}\n  \n/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */\n@media screen and (max-width: 600px) {\n    .column {\n      -ms-flex: 100%;\n      flex: 100%;\n      max-width: 100%;\n    }\n    .column-4 {\n        -ms-flex: 100%;\n        flex: 100%;\n        max-width: 100%;\n    }\n}\n\n\n \n\n  ";
 styleInject(css_248z);
 
-var TreeColumnImageGrid = function (_a) {
-    var firstRow = _a.firstRow, secondRow = _a.secondRow, thirdRow = _a.thirdRow;
-    return (React.createElement("div", { className: "image-component" },
-        React.createElement("div", { className: "row1" },
-            React.createElement("div", { className: "column", style: { cursor: "pointer" } }, firstRow.map(function (x) {
-                return React.createElement("img", { key: x.id, src: x.url, alt: x.alt });
-            })),
-            React.createElement("div", { className: "column", style: { cursor: "pointer" } }, secondRow.map(function (x) {
-                return React.createElement("img", { key: x.id, src: x.url, alt: x.alt });
-            })),
-            React.createElement("div", { className: "column", style: { cursor: "pointer" } }, thirdRow.map(function (x) {
-                return React.createElement("img", { key: x.id, src: x.url, alt: x.alt });
-            })))));
-};
 var ImageGrid = function (_a) {
     var mainSrc = _a.mainSrc, colSize = _a.colSize;
+    var _b = useState('column'), columnCss = _b[0], setColumnCss = _b[1];
     if (!mainSrc || mainSrc.length === 0) {
         return React.createElement("div", null, "No images to display"); // Example handling
     }
-    console.log(mainSrc);
-    var _b = useState([]), underFive = _b[0], setUnderFive = _b[1];
-    var _c = useState([]), overFive = _c[0], setOverFive = _c[1];
-    var _d = useState([]), rest = _d[0], setRest = _d[1];
-    useEffect(function () {
-        var imageSize = Math.floor(mainSrc.length / colSize);
-        setUnderFive(mainSrc.filter(function (x) { return x.id <= imageSize; }));
-        setOverFive(mainSrc.filter(function (x) { return x.id > imageSize && x.id <= imageSize * 2; }));
-        setRest(mainSrc.filter(function (x) { return x.id > imageSize * 2; }));
-        console.log("this is from usestate", mainSrc, colSize);
+    var imageRows = React.useMemo(function () {
+        if (colSize >= 4) {
+            setColumnCss("column-4");
+        }
+        var rows = [];
+        var rowSize = Math.round(mainSrc.length / colSize);
+        console.log(rowSize);
+        var startIndex = 0;
+        var endIndex = rowSize;
+        for (var i = 0; i <= colSize - 1; i++) {
+            console.log(startIndex, endIndex);
+            //const endIndex = Math.min(i + colSize, mainSrc.length);
+            rows.push(mainSrc.slice(startIndex, endIndex));
+            startIndex = endIndex;
+            endIndex += rowSize;
+        }
+        console.log(rows);
+        return rows;
     }, [mainSrc, colSize]);
-    return (React.createElement("div", null,
-        React.createElement("p", null, "This is image grid"),
-        React.createElement(TreeColumnImageGrid, { firstRow: underFive, secondRow: overFive, thirdRow: rest })));
+    var ImageItems = function (_a) {
+        var images = _a.images;
+        return (React.createElement("div", { key: images.length, className: columnCss }, images.map(function (image) { return (React.createElement("img", { key: image.id, src: image.url, alt: image.name })); })));
+    };
+    return (React.createElement("div", { className: "image-component" },
+        React.createElement("div", { className: "row1" }, imageRows.map(function (row, rowIndex) { return (React.createElement(ImageItems, { key: rowIndex, images: row })); }))));
 };
 
 export { Button, ImageGrid };

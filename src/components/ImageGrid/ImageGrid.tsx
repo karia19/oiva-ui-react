@@ -8,72 +8,59 @@ export type imageProps = {
     alt: string;
     name: string;
 };
-const TwoColumnImageGrid: React.FC<{ firstRow: imageProps[]; secondRow: imageProps[]; }> = ({firstRow, secondRow}) => (
-    <div className="image-component">
-        <div className="w3-row" id="myGrid"></div>
-        <div className="row1">
-        <div className="column" style={{ cursor: "pointer" }}>
-            {firstRow.map((x:any) => (
-            <img key={x.id} src={x.url} alt={x.name} />
-            ))}
-        </div>
-        <div className="column" style={{ cursor: "pointer" }}>
-            {secondRow.map((x:any) => (
-            <img key={x.id} src={x.url} alt={x.name} />
-            ))}
-        </div>
-        </div>
-    </div>    
-);
-const TreeColumnImageGrid:React.FC<{ firstRow: imageProps[]; secondRow: imageProps[]; thirdRow: imageProps[]; }> = ({firstRow, secondRow, thirdRow}) => (
-    <div className="image-component">
-        <div className="row1">
-            <div className="column" style={{ cursor: "pointer" }} >
-                {firstRow.map(x => 
-                    <img key={x.id} src={x.url}  alt={x.alt}  />
-                )}
-            </div>
-
-            <div className="column" style={{ cursor: "pointer" }} >
-                {secondRow.map(x => 
-                    <img key={x.id} src={x.url}  alt={x.alt} />
-                )}
-            </div>
-
-            <div className="column" style={{ cursor: "pointer" }} >
-                {thirdRow.map(x => 
-                    <img key={x.id} src={x.url} alt={x.alt}  />
-                )}
-            </div>
-        </div> 
-    </div>
-
-)
-
 
 const ImageGrid:React.FC<{ mainSrc: imageProps[]; colSize: columnSize}>  = ( {mainSrc, colSize }) => {
+    const [columnCss, setColumnCss] = useState('column')
+
     if (!mainSrc || mainSrc.length === 0) {
         return <div>No images to display</div>; // Example handling
     }
-    const [underFive, setUnderFive] = useState<imageProps[]>([]);
-    const [overFive, setOverFive] = useState<imageProps[]>([]);
-    const [rest, setRest] = useState<imageProps[]>([]);
+    const imageRows = React.useMemo(() => {
+        if (colSize >= 4){
+            setColumnCss("column-4")
+        }
 
-    useEffect(() => {
-        const imageSize:number = Math.floor(mainSrc.length / colSize);
-        setUnderFive(mainSrc.filter((x:any) => x.id <= imageSize));
-        setOverFive(mainSrc.filter((x:any) => x.id > imageSize && x.id <= imageSize * 2));
-        setRest(mainSrc.filter((x:any) => x.id > imageSize * 2));
-    }, [mainSrc, colSize]);
+        const rows: imageProps[][] = [];
+        const rowSize = Math.round(mainSrc.length / colSize)
+        console.log(rowSize)
 
-    return(
-        <div>
-            <p>This is image grid</p>
-            <TreeColumnImageGrid 
-                firstRow={underFive}
-                secondRow={overFive}
-                thirdRow={rest}
-            />
+        let startIndex = 0
+        let endIndex = rowSize
+
+        for (let i = 0; i <= colSize -1; i++) {
+            console.log(startIndex, endIndex)
+            //const endIndex = Math.min(i + colSize, mainSrc.length);
+            rows.push(mainSrc.slice(startIndex, endIndex));
+            startIndex = endIndex
+            endIndex += rowSize
+
+        }
+        
+        console.log(rows)
+        return rows;
+        }, [mainSrc, colSize]);
+        
+
+
+    const ImageItems: React.FC<{ images: imageProps[] }> = ({ images }) => {
+        return (
+          <div key={images.length} className={columnCss} > 
+            {images.map((image) => (
+              <img key={image.id} src={image.url} alt={image.name} />
+            ))}
+          </div>
+        );
+    };
+
+    
+        
+    return (  
+        <div className="image-component">
+            <div className="row1">
+                {imageRows.map((row, rowIndex) => (
+                    <ImageItems key={rowIndex} images={row} />
+                ))}            
+            </div>
         </div>
     )
 }
