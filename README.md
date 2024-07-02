@@ -1,5 +1,4 @@
 
-Absolutely, here's the README file for your Oiva UI React component:
 
 oiva-ui-react
 
