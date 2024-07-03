@@ -10,8 +10,9 @@ const Modal: React.FC<{image: imageProps}> = (image) => {
             <div className="modal-text" id="caption">
                 <p>{image.image.name}</p>
             </div>
-            
-            <img className="modal-content" alt={image.image.alt} src={image.image.url}/>
+            <div className="modal-content">
+                <img alt={image.image.alt} src={image.image.url}/>
+            </div>
         </div>
     )
 }

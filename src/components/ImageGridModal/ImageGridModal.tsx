@@ -3,10 +3,12 @@ import './ImageGridModal.css';
 import Modal from "./components/modal";
 import './components/modal.css';
 import Arrow from "./components/Arrows";
-import { columnSize, imageProps } from "../app.types";
+import { columnSize, imageProps, showModal } from "../app.types";
 import { findNextImageById, findPastImageById } from "./utils";
 
-const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize}>  = ( {mainSrc, colSize }) => {
+const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; showModal: showModal}>  = 
+    ( {mainSrc, colSize, showModal }) => {
+    
     const [columnCss, setColumnCss] = useState('column')
     const [selectedImage, setSelectedImage] = useState<imageProps | null>(null);
 
@@ -62,16 +64,22 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize}> 
                 onClick={() => handleImageClick(image)}
               />
             ))}
-            {selectedImage && (
-                <div id="myModal" className={`modal`}>
-                    <span className="close" onClick={() => handleModalClose()}>&times;</span>
+            {showModal ? (
+                <>
+                    {selectedImage && (
+                    <div id="myModal" className="modal">
+                        <span className="close" onClick={handleModalClose}>&times;</span>
 
-                    <Arrow direction="left" onClick={() => moveLeftArrow()} />
-                    <Arrow direction="right" onClick={() => moveRightArrow()} />
-                    <Modal image={selectedImage} />                        
-                </div>
-            
-            )}
+                        <Arrow direction="left" onClick={moveLeftArrow} />
+                        <Arrow direction="right" onClick={moveRightArrow} />
+                        <Modal image={selectedImage} />
+                    </div>
+                    )}
+                </>
+                ) : (
+                <p></p>
+                )}
+
           </div>
         );
     };

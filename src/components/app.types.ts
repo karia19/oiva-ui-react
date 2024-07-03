@@ -6,3 +6,5 @@ export type imageProps = {
     alt: string;
     name: string;
 };
+
+export type showModal = boolean | true
