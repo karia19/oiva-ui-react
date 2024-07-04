@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import './ImageGridModal.css';
 import Modal from "./components/modal";
 import './components/modal.css';
@@ -14,7 +14,7 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; s
 
 
     if (!mainSrc || mainSrc.length === 0) {
-        return <div>No images to display</div>; // Example handling
+        return <div>No images to display</div>; 
     }
     const imageRows = React.useMemo(() => {
         if (colSize >= 4){
@@ -33,13 +33,11 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; s
             startIndex = endIndex
             endIndex += rowSize
         }
-        
-        console.log(rows)
+
         return rows;
         }, [mainSrc, colSize]);
         
     const handleImageClick = (image: imageProps) => {
-        console.log("image", image)
         setSelectedImage(image)
     }
     const handleModalClose = () => {
