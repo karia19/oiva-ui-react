@@ -11,19 +11,27 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; s
     
     const [columnCss, setColumnCss] = useState('column')
     const [selectedImage, setSelectedImage] = useState<imageProps | null>(null);
-
+    const [pointer, setPointer] = useState(false)
 
     if (!mainSrc || mainSrc.length === 0) {
         return <div>No images to display</div>; 
     }
+
     const imageRows = React.useMemo(() => {
         if (colSize >= 4){
             setColumnCss("column-4")
+        } 
+        else if (colSize == 2){
+            setColumnCss("column-2")
+        }
+
+        if (showModal){
+            setPointer(true)
+
         }
 
         const rows: imageProps[][] = [];
         const rowSize = Math.round(mainSrc.length / colSize)
-        console.log(rowSize)
 
         let startIndex = 0
         let endIndex = rowSize
@@ -59,6 +67,7 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; s
               <img key={image.id} 
                 src={image.url} 
                 alt={image.name}
+                style={{ cursor: pointer ? 'pointer' : 'default' }}
                 onClick={() => handleImageClick(image)}
               />
             ))}
@@ -81,8 +90,6 @@ const ImageGridLightBox:React.FC<{ mainSrc: imageProps[]; colSize: columnSize; s
           </div>
         );
     };
-
-    
         
     return (  
         <div className="image-component">

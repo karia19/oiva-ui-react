@@ -1,5 +1,5 @@
 
-## oiva-ui-react: Responsive Image Grid Modal for React
+## Responsive Image Grid Modal for React
 
 **Description**
 
@@ -7,9 +7,9 @@
 
 **Key Features**
 
-- Responsive image grid layout (3 or 4 columns)
+- Responsive image grid layout (2, 3 or 4 columns)
 - Modal view for individual images with image name display
-- Customizable column size (3 or 4)
+- Customizable column size (2, 3 or 4)
 - Easy integration with React projects
 
 **Installation**
@@ -43,7 +43,7 @@ const testImages = [
 function MyComponent() {
   return (
     <ImageGridModal
-      colSize={3} // Number of columns (3 or 4)
+      colSize={3} // Number of columns (2, 3 or 4)
       mainSrc={testImages}
       showModal={true} // Set to true to show the modal
     />
@@ -55,7 +55,7 @@ function MyComponent() {
 
 | Prop            | Type      | Description                                        | Default |
 |-----------------|-----------|-----------------------------------------------------|---------|
-| colSize          | number     | Number of columns in the grid layout (3 or 4)         | 3      |
+| colSize          | number     | Number of columns in the grid layout (2,3 or 4)         | 3      |
 | mainSrc          | array      | Array of image objects with properties:               |         |
 |                  |           | - `id` (unique identifier)                          |         |
 |                  |           | - `url` (image URL)                                 |         |

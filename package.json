@@ -1,7 +1,7 @@
 {
   "name": "oiva-ui-react",
-  "version": "1.0.0",
-  "keywords": ["react", "image-grid", "modal"],
+  "version": "1.0.1",
+  "keywords": ["react", "image-grid", "modal", "image", "flex-box"],
   "engines": {
     "node": ">=8",
     "npm": ">=5"
